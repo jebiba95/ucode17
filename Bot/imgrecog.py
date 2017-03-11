@@ -2,6 +2,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
+from keras.models import model_from_json
 import urllib
 import ImageUtils
 import sys
@@ -16,6 +17,8 @@ nb_train_samples = 32
 nb_validation_samples = 32
 nb_epoch = 5
 
+fichero_pesos = './Authomatic/first_try.h5'
+fichero_modelo = './Authomatic/modelo.json'
 
 
 def entrenar():
