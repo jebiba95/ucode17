@@ -121,5 +121,5 @@ def leerDatos( folder_images ):
 #pr
 #pr = prpasarImagenGrises(pr)
 #if "__init__" == __main__:
-ruta = 'C:\\Users\\javi-\\Documents\\GitHub\\ucode17\\Bot\\fotos\\train\\Blancas\\'
-x_train, y_train, X_test, y_test = leerDatos(ruta)
+#ruta = 'C:\\Users\\javi-\\Documents\\GitHub\\ucode17\\Bot\\fotos\\train\\Blancas\\'
+#x_train, y_train, X_test, y_test = leerDatos(ruta)

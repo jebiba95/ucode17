@@ -99,8 +99,7 @@ elif len(sys.argv) > 1:
 	photo.write(urllib.urlopen(imagen).read())
 	photo.close()
 
-	img = [scipy.misc.imresize(scipy.misc.imread(imagen_descargar), (150, 150))]
-	img = np.array(img).astype(float) / 255.0
+	ui.load_image(imagen_descargar)
 	resultado = model.predict_classes(img)
 
 	#os.remove(imagen_descargar,*,dir_fd=None)
