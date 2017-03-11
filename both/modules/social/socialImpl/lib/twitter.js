@@ -13,10 +13,30 @@ var client = new Twitter({
 });
 
 exports.getPublicationsByKeyword = getPublicationsByKeyword;
+exports.likePublication = likePublication;
+exports.commentPublication = commentPublication;
+
+///////////////////////////// Public functions /////////////////////////////////
 
 function getPublicationsByKeyword(keyWord) {
   return _getTweets(keyWord);
 };
+
+function likePublication(publicationId) {
+  return client.post('favorites/create', {id: publicationId});
+};
+
+function commentPublication(publicationId, response) {
+  console.log(publicationId)
+  var queryParams = {
+    status: response,
+    in_reply_to_status_id: publicationId
+  };
+  
+  return client.post('statuses/update', queryParams);
+};
+
+///////////////////////////// Private functions ////////////////////////////////
 
 function _getTweets(keyWord) {
   return client.get('search/tweets', {q: keyWord})
@@ -33,7 +53,7 @@ function _processTweets(tweets) {
     var tweetObj = {
       name: tweetArray[i].user.screen_name,
       images: _getImagesFromTweet(tweetArray[i].entities.media),
-      tweetId: tweetArray[i].id
+      tweetId: tweetArray[i].id_str
     };
 
     newTweets.push(tweetObj);
