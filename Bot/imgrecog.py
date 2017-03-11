@@ -44,7 +44,7 @@ def entrenar():
 	model.add(Dense(64))
 	model.add(Activation('relu'))
 	model.add(Dropout(0.5))
-	model.add(Dense(1))
+	model.add(Dense(output_dim = 1))
 	model.add(Activation('sigmoid'))
 
 	model.compile(loss='binary_crossentropy',
@@ -99,9 +99,8 @@ elif len(sys.argv) > 1:
 	photo.write(urllib.urlopen(imagen).read())
 	photo.close()
 
-	#img = ImageUtils.load_image(imagen_descargar)
 	img = [scipy.misc.imresize(scipy.misc.imread(imagen_descargar), (150, 150))]
-	img = np.array(img) / 255.0
+	img = np.array(img).astype(float) / 255.0
 	resultado = model.predict_classes(img)
 
 	#os.remove(imagen_descargar,*,dir_fd=None)

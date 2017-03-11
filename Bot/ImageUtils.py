@@ -44,7 +44,7 @@ def resizeImage(img, tamanyo):
         half_the_height + recorte
     )
 )
-        
+    
     wpercent = (basewidth / float(img.size[0]))
     hsize = int((float(img.size[1]) * float(wpercent)))
     img = img.resize((basewidth, hsize), Image.ANTIALIAS)
@@ -53,19 +53,23 @@ def resizeImage(img, tamanyo):
     
 def cargarImagenes ( direccion ):
     #Toma un directorio con las imagenes de entrenamiento
-    ficheros = [os.path.join(direccion,fn) for fn in next(os.walk(direccion))[2]]
     pr = []
-    for n in np.arange(len(ficheros)):
-        pr.append(load_image( ficheros[n] ))    
-    
-    return pr, ficheros
+    nombres = []
+    for name in os.listdir(direccion):
+        pr.append(load_image( direccion+name ))    
+        nombres.append(direccion+name)
+    return pr, nombres
 
 def load_image( infilename ) :
-    img = Image.open( infilename )
+    img = Image.open( infilename ).convert('LA')
     img = resizeImage( img , 150)
     img.load()
-    data = np.asarray( img, dtype="int32" )
-    return data
+    data = np.asarray( img )
+    resultado = np.zeros((150,150))
+    for i in np.arange(150):
+        for j in np.arange(150):
+            resultado[i][j] = data[i][j][0]
+    return resultado
 
 
 def generar_datos_sinteticos(  direccion ):
@@ -116,5 +120,6 @@ def leerDatos( folder_images ):
 #pr = resizeImage(r'C:\Users\javi-\Dropbox\Capturas de pantalla\Halo.png', 250)
 #pr
 #pr = prpasarImagenGrises(pr)
-#ruta = r'C:\Users\javi-\Documents\GitHub\ucode17\fotos'
-#x_train, y_train, X_test, y_test = leerDatos(ruta)
+#if "__init__" == __main__:
+ruta = 'C:\\Users\\javi-\\Documents\\GitHub\\ucode17\\Bot\\fotos\\train\\Blancas\\'
+x_train, y_train, X_test, y_test = leerDatos(ruta)
