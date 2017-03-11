@@ -2,6 +2,8 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
+import urllib
+import ImageUtils
 import sys
 
 
@@ -13,6 +15,7 @@ validation_data_dir = 'fotos/validation'
 nb_train_samples = 32
 nb_validation_samples = 32
 nb_epoch = 5
+
 
 
 def entrenar():
@@ -70,12 +73,25 @@ def entrenar():
 	        validation_data=validation_generator,
 	        nb_val_samples=nb_validation_samples)
 
-	model.save_weights('first_try.h5')
+	model.save_weights(fichero_pesos)
 	json_string = model.to_json()
-	open('.modelo.json', 'w').write(json_string)
+	open(fichero_modelo, 'w').write(json_string)
 
 #-------------Main-----------
 
-
 if len(sys.argv) > 1 and sys.argv[1] == '-i':
 	entrenar()
+elif len(sys.argv) > 1:
+	model = model_from_json(open(fichero_modelo).read())
+	model.load_weights(fichero_pesos)
+	model.compile(optimizer='rmsprop', loss='binary_crossentropy')
+
+	imagen = sys.argv[1]
+	urllib.urlretrieve(imagen, imagen_descargar)
+	img = ImageUtils.load_image(imagen_descargar)
+	resultado = model.predict(img)
+
+	#os.remove(imagen_descargar,*,dir_fd=None)
+
+	print(resultado)
+

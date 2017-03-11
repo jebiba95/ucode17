@@ -9,9 +9,11 @@ Created on Sat Mar 11 00:23:19 2017
 import sys
 import os
 from PIL import Image, ImageOps
+from scipy.misc import imshow
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+from random import shuffle
 
 
 
@@ -24,9 +26,9 @@ def pasarImagenGrises(imagen):
     img = imagen.convert('LA')   
     return img
 
-def resizeImage(imagen, tamanyo):
+def resizeImage(img, tamanyo):
     basewidth = tamanyo
-    img = Image.open(imagen)
+    #img = Image.open(imagen)
     x, y = (img.size)
     half_the_width = img.size[0] / 2
     half_the_height = img.size[1] / 2
@@ -54,14 +56,17 @@ def cargarImagenes ( direccion ):
     ficheros = [os.path.join(direccion,fn) for fn in next(os.walk(direccion))[2]]
     pr = []
     for n in np.arange(len(ficheros)):
-        pr.append(load_image( ficheros[n] ).convert('LA'))    
+        pr.append(load_image( ficheros[n] ))    
     
     return pr, ficheros
 
 def load_image( infilename ) :
-    img = resizeImage(infilename, 250)
+    img = Image.open( infilename )
+    img = resizeImage( img , 150)
+    img.load()
     data = np.asarray( img, dtype="int32" )
-    return numpy.fromstring(image.tostring(), dtype='uint8', count=-1, sep='').reshape(image.shape + (len(image.getbands()),))
+    return data
+
 
 def generar_datos_sinteticos(  direccion ):
     ficheros = [os.path.join(direccion,fn) for fn in next(os.walk(direccion))[2]]
@@ -89,11 +94,27 @@ def leerDatos( folder_images ):
     imagenes, rutas = cargarImagenes( folder_images )
     for n in np.arange(len(rutas)):
             nombre = rutas[n].split("\\")[-1]
-            label = nombre.split("(1)")[0][-1]
-            rutas[n] = label
-    imagenes_test = imagenes[1:(len(rutas)*0.2)]
+            label = nombre.split("(1)")[0]
+            label = label.split("_")[1]
+            label = label.split(".jpg")[0]
+            rutas[n] = int(label)
+
+    index_random = np.arange(len(rutas))
+    np.random.shuffle(index_random)
+    imagenes = [imagenes[i] for i in index_random]
+    rutas = [rutas[i] for i in index_random]
+    
+    imagenes_test = imagenes[1:int(len(rutas)*0.2)]
+    labels_test = rutas[1:int(len(rutas)*0.2)]
+
+    imagenes_train = imagenes[len(labels_test):]
+    labels_train = rutas[len(labels_test):]
+
+    return imagenes_train, labels_train, imagenes_test, labels_test
 
 ################################################
 #pr = resizeImage(r'C:\Users\javi-\Dropbox\Capturas de pantalla\Halo.png', 250)
 #pr
 #pr = prpasarImagenGrises(pr)
+#ruta = r'C:\Users\javi-\Documents\GitHub\ucode17\fotos'
+#x_train, y_train, X_test, y_test = leerDatos(ruta)
