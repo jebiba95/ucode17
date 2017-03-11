@@ -54,9 +54,9 @@ def cargarImagenes ( direccion ):
     ficheros = [os.path.join(direccion,fn) for fn in next(os.walk(direccion))[2]]
     pr = []
     for n in np.arange(len(ficheros)):
-        pr.append(load_image( ficheros[n] ))    
+        pr.append(load_image( ficheros[n] ).convert('LA'))    
     
-    return pr
+    return pr, ficheros
 
 def load_image( infilename ) :
     img = resizeImage(infilename, 250)
@@ -85,7 +85,14 @@ def generar_datos_sinteticos(  direccion ):
         mirror = ImageOps.mirror(original)
         mirror.save(ruta + "(1).jpg")
         
-        
+def leerDatos( folder_images ):
+    imagenes, rutas = cargarImagenes( folder_images )
+    for n in np.arange(len(rutas)):
+            nombre = rutas[n].split("\\")[-1]
+            label = nombre.split("(1)")[0][-1]
+            rutas[n] = label
+    imagenes_test = imagenes[1:(len(rutas)*0.2)]
+
 ################################################
 #pr = resizeImage(r'C:\Users\javi-\Dropbox\Capturas de pantalla\Halo.png', 250)
 #pr
