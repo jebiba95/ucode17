@@ -1,3 +1,3 @@
-import sys
 
-print('Hola caracola, esto te va?')
+def dummy_function(url):
+	return 'OK'
