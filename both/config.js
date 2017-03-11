@@ -7,10 +7,10 @@ const config = {
     url: process.env.MONGO_DB_URI || 'mongodb://localhost/app'
   },
   twitter: {
-  	consumer_key: 'aoaDSv1fVRaRB5MjipgU2ZwBi',
-  	consumer_secret: 's8zJN53nL1N1v6IzSucmLyy9uBleTd68YKM7EZ9rBXrwm3VIHE',
-  	access_token_key: '1538763368-k6xoBObzDXtpA4ZIbxVXMJ2tSfinrKPFfy7FKv2',
-  	access_token_secret: 'vIp5316YQva3Cvh3zQx4bFd52ymDqVFLygRm4qhreMULL'
+  	consumer_key: 'hd0dvD4Yoiu6BF7s8vpA2gD73',
+  	consumer_secret: 'uXvGl6Qqc3EaeXsf3gLQBF4Vu1sq09G5gEHBCOtRH2q48k24d9',
+  	access_token_key: '840512908324945920-olev2wKLH2rMKRsSvEiiv8cMr9wjoET',
+  	access_token_secret: 'xlowoPrhfSySAn79CrejtmNpB8yD1rfmoOYcUBriYjcJo'
   }
 };
 
