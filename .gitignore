@@ -3,3 +3,4 @@ both/node_modules
 .idea
 .DS_Store
 both/npm-debug.log
+*.pyc
