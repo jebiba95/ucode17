@@ -10,15 +10,39 @@ import sys
 import os
 from PIL import Image, ImageOps
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+
 
 ################################################
 # FUNCIONES
 ################################################
 
-def resizeImage(imagen):
-    basewidth = 250
+def pasarImagenGrises(imagen):
+    #img = mpimg.imread(imagen)     
+    img = imagen.convert('LA')   
+    return img
 
+def resizeImage(imagen, tamanyo):
+    basewidth = tamanyo
     img = Image.open(imagen)
+    x, y = (img.size)
+    half_the_width = img.size[0] / 2
+    half_the_height = img.size[1] / 2
+    if ( x < y):
+        recorte = x/2
+    else:
+        recorte = y/2
+    img = img.crop(
+    (
+        half_the_width - recorte,
+        half_the_height - recorte,
+        half_the_width + recorte,
+        half_the_height + recorte
+    )
+)
+        
     wpercent = (basewidth / float(img.size[0]))
     hsize = int((float(img.size[1]) * float(wpercent)))
     img = img.resize((basewidth, hsize), Image.ANTIALIAS)
@@ -35,7 +59,7 @@ def cargarImagenes ( direccion ):
     return pr
 
 def load_image( infilename ) :
-    img = Image.open( infilename ).getData()
+    img = resizeImage(infilename, 250)
     data = np.asarray( img, dtype="int32" )
     return numpy.fromstring(image.tostring(), dtype='uint8', count=-1, sep='').reshape(image.shape + (len(image.getbands()),))
 
@@ -63,4 +87,6 @@ def generar_datos_sinteticos(  direccion ):
         
         
 ################################################
-pr = resizeImage(r'C:\Users\javi-\Dropbox\Capturas de pantalla\Halo.png')
+#pr = resizeImage(r'C:\Users\javi-\Dropbox\Capturas de pantalla\Halo.png', 250)
+#pr
+#pr = prpasarImagenGrises(pr)
