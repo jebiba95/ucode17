@@ -19,6 +19,7 @@ nb_epoch = 5
 
 fichero_pesos = './Authomatic/first_try.h5'
 fichero_modelo = './Authomatic/modelo.json'
+imagen_descargar = r'./Authomatic/image.jpg'
 
 
 def entrenar():
