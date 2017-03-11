@@ -19,7 +19,7 @@ fichero_pesos = './Authomatic/first_try.h5'
 fichero_modelo = './Authomatic/modelo.json'
 imagen_descargar = './Authomatic/image.jpg'
 
-capas_extra = 1
+capas_extra = 10
 
 # fix random seed for reproducibility
 seed = 7
@@ -54,7 +54,7 @@ for label in y_test:
 
 #Create model
 model = Sequential()
-model.add(Convolution2D(32, 3, 3, input_shape=(3, 32, 32), activation='relu', border_mode='same'))
+model.add(Convolution2D(32, 3, 3, input_shape=X_train.shape[1:], activation='relu', border_mode='same'))
 model.add(Dropout(0.2))
 model.add(Convolution2D(32, 3, 3, activation='relu', border_mode='same'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -70,7 +70,7 @@ model.add(Flatten())
 model.add(Dropout(0.2))
 model.add(Dense(1024, activation='relu', W_constraint=maxnorm(3)))
 model.add(Dropout(0.2))
-for i in np.arange(capas_extra):
+for i in numpy.arange(capas_extra):
 	model.add(Dense(512, activation='relu', W_constraint=maxnorm(3)))
 	model.add(Dropout(0.2))
 model.add(Dense(512, activation='relu', W_constraint=maxnorm(3)))
