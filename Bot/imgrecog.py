@@ -4,8 +4,12 @@ from keras.layers import Convolution2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.models import model_from_json
 import urllib
+import requests
 import ImageUtils
 import sys
+
+import numpy as np
+import scipy.misc
 
 
 # dimensions of our images.
@@ -13,13 +17,13 @@ img_width, img_height = 150, 150
 
 train_data_dir = 'fotos/train'
 validation_data_dir = 'fotos/validation'
-nb_train_samples = 32
-nb_validation_samples = 32
+nb_train_samples = 19
+nb_validation_samples = 13
 nb_epoch = 5
 
 fichero_pesos = './Authomatic/first_try.h5'
 fichero_modelo = './Authomatic/modelo.json'
-imagen_descargar = r'./Authomatic/image.jpg'
+imagen_descargar = './Authomatic/image.jpg'
 
 
 def entrenar():
@@ -91,9 +95,14 @@ elif len(sys.argv) > 1:
 	model.compile(optimizer='rmsprop', loss='binary_crossentropy')
 
 	imagen = sys.argv[1]
-	urllib.urlretrieve(imagen, imagen_descargar)
-	img = ImageUtils.load_image(imagen_descargar)
-	resultado = model.predict(img)
+	photo = open(imagen_descargar, 'wb')
+	photo.write(urllib.urlopen(imagen).read())
+	photo.close()
+
+	#img = ImageUtils.load_image(imagen_descargar)
+	img = [scipy.misc.imresize(scipy.misc.imread(imagen_descargar), (150, 150))]
+	img = np.array(img) / 255.0
+	resultado = model.predict_classes(img)
 
 	#os.remove(imagen_descargar,*,dir_fd=None)
 
