@@ -15,6 +15,16 @@ import numpy as np
 # FUNCIONES
 ################################################
 
+def resizeImage(imagen):
+    basewidth = 250
+
+    img = Image.open(imagen)
+    wpercent = (basewidth / float(img.size[0]))
+    hsize = int((float(img.size[1]) * float(wpercent)))
+    img = img.resize((basewidth, hsize), Image.ANTIALIAS)
+    
+    return img
+    
 def cargarImagenes ( direccion ):
     #Toma un directorio con las imagenes de entrenamiento
     ficheros = [os.path.join(direccion,fn) for fn in next(os.walk(direccion))[2]]
@@ -53,3 +63,4 @@ def generar_datos_sinteticos(  direccion ):
         
         
 ################################################
+pr = resizeImage(r'C:\Users\javi-\Dropbox\Capturas de pantalla\Halo.png')
