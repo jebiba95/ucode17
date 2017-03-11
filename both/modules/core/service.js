@@ -1,0 +1,11 @@
+'use strict';
+
+var social = require('./social/interface.service');
+
+var HASH_TAG = '#quieroEsasAdidasUcode';
+
+///////////////////////////// Public functions /////////////////////////////////
+
+
+
+///////////////////////////// Private functions ////////////////////////////////

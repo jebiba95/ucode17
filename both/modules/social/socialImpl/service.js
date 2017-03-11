@@ -2,6 +2,8 @@
 
 exports.getSocialImpl = getSocialImpl;
 
+///////////////////////////// Public functions /////////////////////////////////
+
 function getSocialImpl(socialName) {
   switch(socialName) {
     case 'twitter':

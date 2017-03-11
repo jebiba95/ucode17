@@ -27,7 +27,6 @@ function likePublication(publicationId) {
 };
 
 function commentPublication(publicationId, response) {
-  console.log(publicationId)
   var queryParams = {
     status: response,
     in_reply_to_status_id: publicationId
