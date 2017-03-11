@@ -10,16 +10,13 @@ require('./app.cron');
 
 const app  = express();
 
-// mongoose.Promise = bluebird;
-// mongoose.connect(config.mongo.url);
-
 app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
 
 app.listen(config.server.port, () => {
-  console.log(`Magic happens on port ${config.server.port}`);
+  console.log('App started!');
 });
 
 module.exports = app;

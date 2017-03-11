@@ -2,15 +2,11 @@
 
 var CronJob = require('cron').CronJob;
 
-var social = require('./modules/social/interface.service');
+var analyzeImageService = require('./modules/core/service');
 
 new CronJob('00,15,30,45 * * * * *', function() {
-  console.log('GET Trending topics tweets of Zaragoza...');
+  console.log('Analytics tweets with the hashtag #quieroEsasAdidasUcode...');
 
-  social.getPublicationsByKeyword('#EstoEsUnaPrueba2019345')
-    .then(function(tweets) {
-      var response = '@' + tweets[0].name + ' soy el puto amo!';
-      social.commentPublication(tweets[0].tweetId, response);
-    })
+  analyzeImageService.searchPublicationAndAnalyzeImages('twitter');
   
 }, null, true, 'Europe/Madrid');
