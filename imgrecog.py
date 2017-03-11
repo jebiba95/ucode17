@@ -18,7 +18,7 @@ tf.logging.set_verbosity(tf.logging.INFO)
 def cnn_model_fn(features, labels, mode):
 	"""Model function for CNN."""
 	# Input Layer
-	input_layer = tf.reshape(features, [-1, 50, 50, 1])
+	input_layer = tf.reshape(features, [-1, 250, 250, 1])
 
 	# Convolutional Layer #1
 	conv1 = tf.layers.conv2d(
@@ -78,9 +78,18 @@ def cnn_model_fn(features, labels, mode):
 	return model_fn_lib.ModelFnOps(
 			mode=mode, predictions=predictions, loss=loss, train_op=train_op)
 
+def resizeImage(imagen):
+    basewidth = 250
+
+    img = Image.open(imagen)
+    wpercent = (basewidth / float(img.size[0]))
+    hsize = int((float(img.size[1]) * float(wpercent)))
+    img = img.resize((basewidth, hsize), Image.ANTIALIAS)
+    
+    return img
+
 def load_image( infilename ) :
-	img = Image.open( infilename )
-	img.load()
+	img = resizeImage(infilename)
 	data = np.asarray( img, dtype="int32" )
 	return data
 
@@ -101,13 +110,16 @@ def main(unused_argv):
 	for n in np.arange(len(ficheros)):
 		images_total.append(load_image( ficheros[n] ))
 		images_label.append(ficheros[n][11:-4])
+		break
 
 	images_label = np.asarray(images_label, dtype=np.int32)
 	images_total = np.asarray(images_total, dtype=np.float32)
 
+	print('Creando Estimador')
 	# Create the Estimator
 	mnist_classifier = learn.Estimator(
 			model_fn=cnn_model_fn, model_dir="/tmp/mnist_convnet_model")
+	print('Estimador creado')
 
 	# Set up logging for predictions
 	# Log the values in the "Softmax" tensor with label "probabilities"
@@ -115,6 +127,7 @@ def main(unused_argv):
 	logging_hook = tf.train.LoggingTensorHook(
 			tensors=tensors_to_log, every_n_iter=50)
 
+	print('Entrenando Clasificador')
 	# Train the model
 	mnist_classifier.fit(
 			x=images_total,
@@ -122,6 +135,7 @@ def main(unused_argv):
 			#batch_size=10,
 			steps=2,
 			monitors=[logging_hook])
+	print('Clasificador creado')
 
 	# Configure the accuracy metric for evaluation
 	metrics = {
