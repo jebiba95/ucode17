@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(morgan('tiny'));
 
 app.listen(config.server.port, () => {
-  console.log('App started!');
+  console.log('Both started!');
 });
 
 module.exports = app;
