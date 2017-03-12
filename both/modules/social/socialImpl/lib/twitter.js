@@ -47,12 +47,12 @@ function _getTweets(keyWord) {
 function _processTweets(tweets) {
   var newTweets = [];
   var tweetArray = tweets.statuses;
-
   for (var i = 0; i < tweetArray.length; i++) {
     var tweetObj = {
       name: tweetArray[i].user.screen_name,
       images: _getImagesFromTweet(tweetArray[i].entities.media),
-      tweetId: tweetArray[i].id_str
+      tweetId: tweetArray[i].id_str,
+      coordinates: _getLatLng(tweetArray[i].coordinates)
     };
 
     newTweets.push(tweetObj);
@@ -71,4 +71,16 @@ function _getImagesFromTweet(tweetMedia) {
   }
 
   return images;
-}
+};
+
+function _getLatLng(coordinates) {
+  var coordinatesObj = {};
+  if (coordinates) {
+    coordinatesObj = {
+      lat: coordinates.coordinates[1],
+      lng: coordinates.coordinates[0]
+    };
+  }
+
+  return coordinatesObj;
+};
